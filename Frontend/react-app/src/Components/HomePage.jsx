@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 export default function HomePage() {
-    const navigate = useNavigate();
+    let navigate = useNavigate();
     return (
         <>
             <div id="nyito">

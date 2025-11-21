@@ -13,7 +13,7 @@ async function fetchFlowers(setFlowers) {
 
 export default function Flowers(props) {
     const [ flowers, setFlowers ] = useState([]);
-    const navigate = useNavigate();
+    let navigate = useNavigate();
 
     useEffect(() => {
         fetchFlowers(setFlowers);
@@ -28,7 +28,7 @@ export default function Flowers(props) {
         <>
             <div>
                 <header>
-			        <a href="index.html" target="_self"><img src="./sunflower.jpg" alt="fa" id="logo" /></a>
+			        <img src="./sunflower.jpg" alt="fa" id="logo" onClick={() => navigate('/')}/>
 			        <h1>Nevenincs Bt.</h1>
 			        <h2>Vetőmagok - Mindenféle, minden mennyiségben</h2>
 		        </header>
