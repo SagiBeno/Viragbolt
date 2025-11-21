@@ -131,10 +131,15 @@ input {
   }
 }
 
-
 #nyito {
     background-image: url(fokep.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+@media screen and (max-width: 768px) {
+    footer {
+        text-align: left;
+    }
 }
