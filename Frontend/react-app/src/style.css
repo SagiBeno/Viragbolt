@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+}
+
+body {       
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
+    margin: 0;    
+}
+
+#nyito {
+	color: white;    
+    background-position: center;
+	height: 100vh;
+}
+
+header {
+    text-align: center;
+    background-color: rgba(105,57,2,.8);
+    height: 8rem;
+    margin: 0;
+    padding: 20px;
+    text-shadow: 2px 2px 2px black;
+	color: white;
+}
+
+#logo {
+	position: absolute;
+	top: 14px;
+    left: 2%;
+	border-radius: 50%;
+    width: 88px;
+}
+
+h1, h2, h3, h4 {
+    letter-spacing: 2px;
+}
+
+header h1, h2, h3, div, ul, li {
+    margin: 0;
+}
+
+main a:hover {
+	color: white;
+}
+
+main>a {
+    width: 30rem;
+    margin: 6rem auto 0;        
+	background-color: rgba(251,136,4,.7);
+	text-shadow: 1px 1px 1px black;
+	letter-spacing: 2px;
+    border-radius: 10px; 
+    text-align: center;  
+    color: white;
+    text-decoration: none;
+	display: block;
+	padding: 20px;
+	font-size: 1.8rem;
+}
+
+
+main.container {
+    background-color: #fff;  
+    color: black; 
+    margin: 0 auto; 
+}
+
+main .row {
+    margin-top: .5rem;
+    margin-bottom: 10rem;
+}
+
+main p {
+    text-align: justify;
+    font-size: 1.3rem;
+}
+
+main h2 {
+	margin: .5rem;
+	text-align: center;
+}
+
+footer {
+    text-align: right;
+    background-color: rgba(105,57,2,.8);
+	color: white;
+    margin: 0;
+    padding: 10px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+footer ul li {
+    text-align: left;
+}
+
+.arukep img {
+    border-radius: 10px;
+}
+
+.arukep img:hover {    
+    cursor: pointer;
+    box-shadow: 2px 2px 20px black;
+}
+
+.arukep {
+    color: black;
+}
+
+#ar {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 50px;
+}
+
+form {
+    font-weight: bold;    
+}
+
+input {
+    text-align: right;
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 900px) {  
+  header h2 {
+    display: none;
+  }
+}
+
+#nyito {
+    background-image: url(fokep.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+@media screen and (max-width: 768px) {
+    footer {
+        text-align: left;
+    }
+}
+
+#logo:hover {
+    cursor: pointer;
+}
