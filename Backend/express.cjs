@@ -27,15 +27,15 @@ app.get('/api/flowers', (req, res) => {
             INNER JOIN kategoriak ON aruk.kategoriaId = kategoriak.id
         `,
         (err, result, fields) => {
-            if (err) res.status(500).json({ error: 'Lekérdezési hiba' });
-            if (result) res.status(200).json(result);
+            if (err) return res.status(500).json({ error: 'Lekérdezési hiba' });
+            if (result) return res.status(200).json(result);
         }
     );
 });
 
 app.get('/api/flower/:id', (req, res) => {
     const id = req.params?.id;
-    if (!id) res.status(400).json({ msg: 'Hiányzó paraméter: id' });
+    if (!id) return res.status(400).json({ msg: 'Hiányzó paraméter: id' });
     else {
         conn.query(
             `
@@ -46,10 +46,9 @@ app.get('/api/flower/:id', (req, res) => {
             `,
             [id],
             (err, result, fields) => {
-                if (err) res.status(500).json({ error: 'Lekérdezési hiba' });
-                if (result.length === 0) {
-                    res.status(404).json({ msg: 'A virág nem található' });
-                } else res.status(200).json(result);
+                if (err) return res.status(500).json({ error: 'Lekérdezési hiba' });
+                if (result.length === 0) return res.status(404).json({ msg: 'A virág nem található' });
+                else return res.status(200).json(result);
             }
         );
     }
@@ -61,8 +60,8 @@ app.get('/api/categories', (req, res) => {
             SELECT * FROM kategoriak
         `,
         (err, result, fields) => {
-            if (err) res.status(500).json({ error: 'Lekérdezési hiba' });
-            if (result) res.status(200).json(result);
+            if (err) return res.status(500).json({ error: 'Lekérdezési hiba' });
+            if (result) return res.status(200).json(result);
         }
     );
 });
@@ -75,7 +74,7 @@ app.post('/api/flowers', (req, res) => {
     let kategoriaId = +req.body?.kategoriaId;
     let ar = +req.body?.ar;
 
-    if (!nev) res.status(400).json({ msg: 'Hiányzó adat: név' });
+    if (!nev) return res.status(400).json({ msg: 'Hiányzó adat: név' });
     else {
         if (leiras === undefined) leiras = null;
         if (kepUrl === undefined) kepUrl = null;
@@ -90,8 +89,41 @@ app.post('/api/flowers', (req, res) => {
             `,
             [nev, kategoriaId, leiras, keszlet, ar, kepUrl],
             (err, result, fields) => {
-                if (err) res.status(500).json({ error: 'Sikertelen hozzáadás!' });
-                if (result) res.status(201).json({ msg: 'Sikeres hozzáadás!' });
+                if (err) return res.status(500).json({ error: 'Sikertelen hozzáadás!' });
+                if (result) return res.status(201).json({ msg: 'Sikeres hozzáadás!' });
+            }
+        );
+    }
+});
+
+app.put('/api/flowers/:id', (req, res) => {
+    const id = req.params?.id
+    const nev = req.body?.nev;
+    const leiras = req.body?.leiras;
+    const kepUrl = req.body?.kepUrl;
+    const keszlet = +req.body?.keszlet
+    const kategoriaId = +req.body?.kategoriaId;
+    const ar = +req.body?.ar;
+    var data = {};
+
+    if (!id) return res.status(400).json({ msg: 'Hiányzó paraméter: id' });
+    else {
+        if (nev != undefined) data = { ...data, nev: nev};
+        if (leiras != undefined) data = { ...data, leiras: leiras};
+        if (kepUrl != undefined) data = { ...data, kepUrl: kepUrl};
+        if (!isNaN(keszlet)) data = { ...data, keszlet: keszlet};
+        if (!isNaN(kategoriaId)) data = { ...data, kategoriaId: kategoriaId};
+        if (!isNaN(ar)) data = { ...data, ar: ar};
+
+        conn.query(
+            `
+                UPDATE aruk SET ${Object.keys(data).map(key => `${key} = ?`).join(', ')} WHERE id = ?
+            `,
+            [ ...Object.values(data), id],
+            (err, result, fields) => {
+                if (err) return res.status(500).json({ error: 'SQL hiba' });
+                if (result.affectedRows === 0) return res.status(404).json({ msg: 'Az adott azonosítóval nem található termék!' });
+                else return res.status(200).json({ msg: 'Sikeres módosítás!'});
             }
         );
     }
