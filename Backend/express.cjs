@@ -34,8 +34,8 @@ app.get('/api/flowers', (req, res) => {
 });
 
 app.get('/api/flower/:id', (req, res) => {
-    const id = req.params?.id;
-    if (!id) return res.status(400).json({ msg: 'Hiányzó paraméter: id' });
+    const id = +req.params?.id;
+    if (isNaN(id)) return res.status(400).json({ msg: 'Hiányzó vagy nem megfelelő paraméter: id!' });
     else {
         conn.query(
             `
@@ -46,8 +46,8 @@ app.get('/api/flower/:id', (req, res) => {
             `,
             [id],
             (err, result, fields) => {
-                if (err) return res.status(500).json({ error: 'Lekérdezési hiba' });
-                if (result.length === 0) return res.status(404).json({ msg: 'A virág nem található' });
+                if (err) return res.status(500).json({ error: 'SQL hiba!' });
+                if (result.length === 0) return res.status(404).json({ msg: 'A virág nem található!' });
                 else return res.status(200).json(result);
             }
         );
@@ -60,7 +60,7 @@ app.get('/api/categories', (req, res) => {
             SELECT * FROM kategoriak
         `,
         (err, result, fields) => {
-            if (err) return res.status(500).json({ error: 'Lekérdezési hiba' });
+            if (err) return res.status(500).json({ error: 'SQL hiba!' });
             if (result) return res.status(200).json(result);
         }
     );
@@ -74,7 +74,7 @@ app.post('/api/flowers', (req, res) => {
     let kategoriaId = +req.body?.kategoriaId;
     let ar = +req.body?.ar;
 
-    if (!nev) return res.status(400).json({ msg: 'Hiányzó adat: név' });
+    if (nev === undefined) return res.status(400).json({ msg: 'Hiányzó adat: név' });
     else {
         if (leiras === undefined) leiras = null;
         if (kepUrl === undefined) kepUrl = null;
@@ -97,7 +97,7 @@ app.post('/api/flowers', (req, res) => {
 });
 
 app.put('/api/flowers/:id', (req, res) => {
-    const id = req.params?.id
+    const id = +req.params?.id
     const nev = req.body?.nev;
     const leiras = req.body?.leiras;
     const kepUrl = req.body?.kepUrl;
@@ -106,7 +106,7 @@ app.put('/api/flowers/:id', (req, res) => {
     const ar = +req.body?.ar;
     var data = {};
 
-    if (!id) return res.status(400).json({ msg: 'Hiányzó paraméter: id' });
+    if (isNaN(id)) return res.status(400).json({ msg: 'Hiányzó vagy nem megfelelő paraméter: id!' });
     else {
         if (nev != undefined) data = { ...data, nev: nev};
         if (leiras != undefined) data = { ...data, leiras: leiras};
@@ -124,6 +124,24 @@ app.put('/api/flowers/:id', (req, res) => {
                 if (err) return res.status(500).json({ error: 'SQL hiba' });
                 if (result.affectedRows === 0) return res.status(404).json({ msg: 'Az adott azonosítóval nem található termék!' });
                 else return res.status(200).json({ msg: 'Sikeres módosítás!'});
+            }
+        );
+    }
+});
+
+app.delete('/api/flowers/:id', (req, res) => {
+    const id = +req.params?.id;
+    if (isNaN(id)) return res.status(400).json({ msg: 'Hiányzó vagy nem megfelelő paraméter: id!' });
+    else {
+        conn.query(
+            `
+                DELETE FROM aruk WHERE id = ?
+            `
+            [id],
+            (err, result, fields) => {
+                if (err) return res.status(500).json({ error: 'SQL hiba!' });
+                if (result.affectedRows === 0) return res.status(404).json({ msg: 'A virág nem található!' });
+                else return res.status(200).json({ msg: 'Sikeres törlés!' });
             }
         );
     }
