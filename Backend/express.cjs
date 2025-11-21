@@ -136,7 +136,7 @@ app.delete('/api/flowers/:id', (req, res) => {
         conn.query(
             `
                 DELETE FROM aruk WHERE id = ?
-            `
+            `,
             [id],
             (err, result, fields) => {
                 if (err) return res.status(500).json({ error: 'SQL hiba!' });
