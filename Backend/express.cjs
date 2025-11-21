@@ -55,6 +55,18 @@ app.get('/api/flower/:id', (req, res) => {
     }
 });
 
+app.get('/api/categories', (req, res) => {
+    conn.query(
+        `
+            SELECT * FROM kategoriak
+        `,
+        (err, result, fields) => {
+            if (err) res.status(500).json({ error: 'Database query error' });
+            if (result) res.status(200).json(result);
+        }
+    );
+})
+
 const port = 3333;
 app.listen(port, () => {
     console.log('Express backend server is running on port:', port);
