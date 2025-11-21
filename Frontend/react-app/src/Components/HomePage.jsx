@@ -11,7 +11,7 @@ export default function HomePage() {
 	            	<h2>Vetőmagok - Mindenféle, minden mennyiségben</h2>
 	            </header>
 	            <main>        
-	            	<a href="aruk.html">Válasszon vetőmagjainkból!</a>
+	            	<a href="/flowers">Válasszon vetőmagjainkból!</a>
 	            </main>
 	            <footer>
 	            	<div className="row">
