@@ -33,6 +33,28 @@ app.get('/api/flowers', (req, res) => {
     );
 });
 
+app.get('/api/flower/:id', (req, res) => {
+    const id = req.params?.id;
+    if (!id) res.status(400).json({msg: 'Hiányzó paraméter: id'});
+    else {
+        conn.query(
+            `
+                SELECT aruk.id, aruk.nev, aruk.leiras, aruk.keszlet, aruk.ar, aruk.kepUrl, kategoriak.nev AS 'kategoria_nev'
+                FROM aruk
+                INNER JOIN kategoriak ON aruk.kategoriaId = kategoriak.id
+                WHERE aruk.id = ?
+            `,
+            [id],
+            (err, result, fields) => {
+                if (err) res.status(500).json({ error: 'Database query error' });
+                if (result.length === 0) {
+                    res.status(404).json({msg: 'A virág nem található'});
+                } else res.status(200).json(result);
+            }
+        );
+    }
+});
+
 const port = 3333;
 app.listen(port, () => {
     console.log('Express backend server is running on port:', port);
